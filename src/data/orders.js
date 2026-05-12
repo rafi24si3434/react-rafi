@@ -7,6 +7,7 @@ const orders = [
     total: 10000,
     status: "Pending",
     date: "2025-04-01",
+    image: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
     id: 101,
@@ -14,6 +15,7 @@ const orders = [
     total: 20000,
     status: "Completed",
     date: "2025-04-02",
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
   },
   {
     id: 102,
@@ -21,6 +23,7 @@ const orders = [
     total: 30000,
     status: "Cancelled",
     date: "2025-04-03",
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
   },
   {
     id: 103,
@@ -28,6 +31,7 @@ const orders = [
     total: 40000,
     status: "Pending",
     date: "2025-04-04",
+    image: "https://randomuser.me/api/portraits/men/4.jpg",
   },
   {
     id: 104,
@@ -35,6 +39,7 @@ const orders = [
     total: 50000,
     status: "Completed",
     date: "2025-04-05",
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
   },
   {
     id: 105,
@@ -42,6 +47,7 @@ const orders = [
     total: 60000,
     status: "Cancelled",
     date: "2025-04-06",
+    image: "https://randomuser.me/api/portraits/men/6.jpg",
   },
   {
     id: 106,
@@ -49,6 +55,7 @@ const orders = [
     total: 70000,
     status: "Pending",
     date: "2025-04-07",
+    image: "https://randomuser.me/api/portraits/women/7.jpg",
   },
   {
     id: 107,
@@ -56,6 +63,7 @@ const orders = [
     total: 80000,
     status: "Completed",
     date: "2025-04-08",
+    image: "https://randomuser.me/api/portraits/men/8.jpg",
   },
   {
     id: 108,
@@ -63,6 +71,7 @@ const orders = [
     total: 90000,
     status: "Cancelled",
     date: "2025-04-09",
+    image: "https://randomuser.me/api/portraits/women/9.jpg",
   },
   {
     id: 109,
@@ -70,6 +79,7 @@ const orders = [
     total: 100000,
     status: "Pending",
     date: "2025-04-10",
+    image: "https://randomuser.me/api/portraits/men/10.jpg",
   },
   {
     id: 110,
@@ -77,6 +87,7 @@ const orders = [
     total: 110000,
     status: "Completed",
     date: "2025-04-11",
+    image: "https://randomuser.me/api/portraits/women/11.jpg",
   },
   {
     id: 111,
@@ -84,6 +95,7 @@ const orders = [
     total: 120000,
     status: "Cancelled",
     date: "2025-04-12",
+    image: "https://randomuser.me/api/portraits/men/12.jpg",
   },
   {
     id: 112,
@@ -91,6 +103,7 @@ const orders = [
     total: 130000,
     status: "Pending",
     date: "2025-04-13",
+    image: "https://randomuser.me/api/portraits/women/13.jpg",
   },
   {
     id: 113,
@@ -98,6 +111,7 @@ const orders = [
     total: 140000,
     status: "Completed",
     date: "2025-04-14",
+    image: "https://randomuser.me/api/portraits/men/14.jpg",
   },
   {
     id: 114,
@@ -105,6 +119,7 @@ const orders = [
     total: 150000,
     status: "Cancelled",
     date: "2025-04-15",
+    image: "https://randomuser.me/api/portraits/women/15.jpg",
   },
   {
     id: 115,
@@ -112,6 +127,7 @@ const orders = [
     total: 160000,
     status: "Pending",
     date: "2025-04-16",
+    image: "https://randomuser.me/api/portraits/men/16.jpg",
   },
   {
     id: 116,
@@ -119,6 +135,7 @@ const orders = [
     total: 170000,
     status: "Completed",
     date: "2025-04-17",
+    image: "https://randomuser.me/api/portraits/women/17.jpg",
   },
   {
     id: 117,
@@ -126,6 +143,7 @@ const orders = [
     total: 180000,
     status: "Cancelled",
     date: "2025-04-18",
+    image: "https://randomuser.me/api/portraits/men/18.jpg",
   },
   {
     id: 118,
@@ -133,6 +151,7 @@ const orders = [
     total: 190000,
     status: "Pending",
     date: "2025-04-19",
+    image: "https://randomuser.me/api/portraits/women/19.jpg",
   },
   {
     id: 119,
@@ -140,6 +159,7 @@ const orders = [
     total: 200000,
     status: "Completed",
     date: "2025-04-20",
+    image: "https://randomuser.me/api/portraits/men/20.jpg",
   },
   {
     id: 120,
@@ -147,6 +167,7 @@ const orders = [
     total: 210000,
     status: "Cancelled",
     date: "2025-04-21",
+    image: "https://randomuser.me/api/portraits/men/21.jpg",
   },
   {
     id: 121,
@@ -154,6 +175,7 @@ const orders = [
     total: 220000,
     status: "Pending",
     date: "2025-04-22",
+    image: "https://randomuser.me/api/portraits/women/22.jpg",
   },
   {
     id: 122,
@@ -161,6 +183,7 @@ const orders = [
     total: 230000,
     status: "Completed",
     date: "2025-04-23",
+    image: "https://randomuser.me/api/portraits/women/23.jpg",
   },
   {
     id: 123,
@@ -168,6 +191,7 @@ const orders = [
     total: 240000,
     status: "Cancelled",
     date: "2025-04-24",
+    image: "https://randomuser.me/api/portraits/men/24.jpg",
   },
   {
     id: 124,
@@ -175,6 +199,7 @@ const orders = [
     total: 250000,
     status: "Pending",
     date: "2025-04-25",
+    image: "https://randomuser.me/api/portraits/women/25.jpg",
   },
   {
     id: 125,
@@ -182,6 +207,7 @@ const orders = [
     total: 260000,
     status: "Completed",
     date: "2025-04-26",
+    image: "https://randomuser.me/api/portraits/men/26.jpg",
   },
   {
     id: 126,
@@ -189,6 +215,7 @@ const orders = [
     total: 270000,
     status: "Cancelled",
     date: "2025-04-27",
+    image: "https://randomuser.me/api/portraits/women/27.jpg",
   },
   {
     id: 127,
@@ -196,6 +223,7 @@ const orders = [
     total: 280000,
     status: "Pending",
     date: "2025-04-28",
+    image: "https://randomuser.me/api/portraits/men/28.jpg",
   },
   {
     id: 128,
@@ -203,6 +231,7 @@ const orders = [
     total: 290000,
     status: "Completed",
     date: "2025-04-29",
+    image: "https://randomuser.me/api/portraits/women/29.jpg",
   },
   {
     id: 129,
@@ -210,6 +239,7 @@ const orders = [
     total: 300000,
     status: "Cancelled",
     date: "2025-04-30",
+    image: "https://randomuser.me/api/portraits/men/30.jpg",
   },
 ];
 

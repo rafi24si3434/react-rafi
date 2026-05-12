@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaSearch,
   FaUserPlus,
@@ -40,45 +40,75 @@ function TableRow({
   email,
   phone,
   loyalty,
+  image,
 }) {
   return (
     <tr className="border-b border-gray-100 hover:bg-green-50/40 transition duration-200">
 
+      {/* ID */}
       <td className="px-6 py-5 text-gray-500 font-medium">
         #{id}
       </td>
 
+      {/* CUSTOMER */}
       <td className="px-6 py-5">
-        <div>
-          <h1 className="font-semibold text-gray-800">
-            {name}
-          </h1>
 
-          <p className="text-xs text-gray-400">
-            Customer Member
-          </p>
+        <div className="flex items-center gap-4">
+
+          {/* FOTO */}
+          <img
+            src={image}
+            alt={name}
+            className="w-14 h-14 rounded-2xl object-cover border border-gray-200 shadow-sm"
+          />
+
+          {/* INFO */}
+          <div>
+
+            <Link
+              to={`/customers/${id}`}
+              className="font-semibold text-gray-800 hover:text-green-600 transition"
+            >
+              {name}
+            </Link>
+
+            <p className="text-xs text-gray-400">
+              Customer Member
+            </p>
+
+          </div>
+
         </div>
+
       </td>
 
+      {/* EMAIL */}
       <td className="px-6 py-5 text-gray-500">
         {email}
       </td>
 
+      {/* PHONE */}
       <td className="px-6 py-5 text-gray-500">
         {phone}
       </td>
 
+      {/* LOYALTY */}
       <td className="px-6 py-5">
         <LoyaltyBadge loyalty={loyalty} />
       </td>
 
+      {/* ACTION */}
       <td className="px-6 py-5">
+
         <div className="flex items-center gap-4">
 
-          <button className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition">
+          <Link
+            to={`/customers/${id}`}
+            className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition"
+          >
             <FaEye />
             View
-          </button>
+          </Link>
 
           <button className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition">
             <FaTrashAlt />
@@ -86,6 +116,7 @@ function TableRow({
           </button>
 
         </div>
+
       </td>
 
     </tr>
@@ -123,6 +154,7 @@ export default function Customers() {
       <div className="flex justify-between items-center mb-8">
 
         <div>
+
           <h1 className="text-3xl font-bold text-gray-800">
             Customers
           </h1>
@@ -130,6 +162,7 @@ export default function Customers() {
           <p className="text-sm text-gray-400 mt-1">
             Manage your customers data easily
           </p>
+
         </div>
 
         <button
@@ -168,6 +201,7 @@ export default function Customers() {
           <thead className="bg-gradient-to-r from-green-50 to-white text-gray-600 text-sm">
 
             <tr>
+
               <th className="px-6 py-5 font-semibold">
                 ID
               </th>
@@ -191,6 +225,7 @@ export default function Customers() {
               <th className="px-6 py-5 font-semibold">
                 Action
               </th>
+
             </tr>
 
           </thead>
@@ -203,12 +238,14 @@ export default function Customers() {
 
             {currentData.length === 0 && (
               <tr>
+
                 <td
                   colSpan="6"
                   className="text-center py-12 text-gray-400"
                 >
                   No customers found
                 </td>
+
               </tr>
             )}
 

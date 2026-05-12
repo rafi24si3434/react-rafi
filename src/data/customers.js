@@ -7,6 +7,7 @@ const customers = [
     email: "rafi@email.com",
     phone: "081231000001",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ const customers = [
     email: "andi@email.com",
     phone: "081231000002",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ const customers = [
     email: "siti@email.com",
     phone: "081231000003",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
   },
   {
     id: 4,
@@ -28,6 +31,7 @@ const customers = [
     email: "budi@email.com",
     phone: "081231000004",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/men/4.jpg",
   },
   {
     id: 5,
@@ -35,6 +39,7 @@ const customers = [
     email: "rina@email.com",
     phone: "081231000005",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
   },
   {
     id: 6,
@@ -42,6 +47,7 @@ const customers = [
     email: "fajar@email.com",
     phone: "081231000006",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/6.jpg",
   },
   {
     id: 7,
@@ -49,13 +55,15 @@ const customers = [
     email: "dewi@email.com",
     phone: "081231000007",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/women/7.jpg",
   },
   {
     id: 8,
-    name: "Rizky Pratama",
+    name: "rizky martin pria penghibur",
     email: "rizky@email.com",
     phone: "081231000008",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/men/8.jpg",
   },
   {
     id: 9,
@@ -63,6 +71,7 @@ const customers = [
     email: "nabila@email.com",
     phone: "081231000009",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/women/9.jpg",
   },
   {
     id: 10,
@@ -70,6 +79,7 @@ const customers = [
     email: "yoga@email.com",
     phone: "081231000010",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/men/10.jpg",
   },
   {
     id: 11,
@@ -77,6 +87,7 @@ const customers = [
     email: "putri@email.com",
     phone: "081231000011",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/women/11.jpg",
   },
   {
     id: 12,
@@ -84,6 +95,7 @@ const customers = [
     email: "aldi@email.com",
     phone: "081231000012",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/12.jpg",
   },
   {
     id: 13,
@@ -91,6 +103,7 @@ const customers = [
     email: "citra@email.com",
     phone: "081231000013",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/women/13.jpg",
   },
   {
     id: 14,
@@ -98,6 +111,7 @@ const customers = [
     email: "dimas@email.com",
     phone: "081231000014",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/men/14.jpg",
   },
   {
     id: 15,
@@ -105,13 +119,15 @@ const customers = [
     email: "erika@email.com",
     phone: "081231000015",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/women/15.jpg",
   },
   {
     id: 16,
-    name: "Farhan Maulana",
-    email: "farhan@email.com",
+    name: "Dipa South East",
+    email: "Dipa@email.com",
     phone: "081231000016",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/men/16.jpg",
   },
   {
     id: 17,
@@ -119,6 +135,7 @@ const customers = [
     email: "gina@email.com",
     phone: "081231000017",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/women/17.jpg",
   },
   {
     id: 18,
@@ -126,6 +143,7 @@ const customers = [
     email: "hendra@email.com",
     phone: "081231000018",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/18.jpg",
   },
   {
     id: 19,
@@ -133,6 +151,7 @@ const customers = [
     email: "indah@email.com",
     phone: "081231000019",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/women/19.jpg",
   },
   {
     id: 20,
@@ -140,6 +159,7 @@ const customers = [
     email: "joko@email.com",
     phone: "081231000020",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/men/20.jpg",
   },
   {
     id: 21,
@@ -147,6 +167,7 @@ const customers = [
     email: "kevin@email.com",
     phone: "081231000021",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/21.jpg",
   },
   {
     id: 22,
@@ -154,6 +175,7 @@ const customers = [
     email: "laila@email.com",
     phone: "081231000022",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/women/22.jpg",
   },
   {
     id: 23,
@@ -161,6 +183,7 @@ const customers = [
     email: "maya@email.com",
     phone: "081231000023",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/women/23.jpg",
   },
   {
     id: 24,
@@ -168,6 +191,7 @@ const customers = [
     email: "naufal@email.com",
     phone: "081231000024",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/24.jpg",
   },
   {
     id: 25,
@@ -175,6 +199,7 @@ const customers = [
     email: "olivia@email.com",
     phone: "081231000025",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/women/25.jpg",
   },
   {
     id: 26,
@@ -182,6 +207,7 @@ const customers = [
     email: "prasetyo@email.com",
     phone: "081231000026",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/men/26.jpg",
   },
   {
     id: 27,
@@ -189,6 +215,7 @@ const customers = [
     email: "qori@email.com",
     phone: "081231000027",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/women/27.jpg",
   },
   {
     id: 28,
@@ -196,6 +223,7 @@ const customers = [
     email: "reza@email.com",
     phone: "081231000028",
     loyalty: "Gold",
+    image: "https://randomuser.me/api/portraits/men/28.jpg",
   },
   {
     id: 29,
@@ -203,13 +231,15 @@ const customers = [
     email: "sarah@email.com",
     phone: "081231000029",
     loyalty: "Silver",
+    image: "https://randomuser.me/api/portraits/women/29.jpg",
   },
   {
     id: 30,
-    name: "Taufik Hidayat",
-    email: "taufik@email.com",
+    name: "sigit tompel",
+    email: "sigit@email.com",
     phone: "081231000030",
     loyalty: "Bronze",
+    image: "https://randomuser.me/api/portraits/men/30.jpg",
   },
 ];
 

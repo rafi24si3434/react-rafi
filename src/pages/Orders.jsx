@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaSearch,
   FaChevronLeft,
@@ -40,48 +40,76 @@ function TableRow({
   total,
   status,
   date,
+  image,
 }) {
   return (
     <tr className="border-b border-gray-100 hover:bg-green-50/40 transition duration-200">
 
+      {/* ID */}
       <td className="px-6 py-5 text-gray-500 font-medium">
         #{id}
       </td>
 
-      <td className="px-6 py-5">
-
-        <div>
-          <h1 className="font-semibold text-gray-800">
-            {customer}
-          </h1>
-
-          <p className="text-xs text-gray-400">
-            Active Customer
-          </p>
-        </div>
-
-      </td>
-
-      <td className="px-6 py-5 text-gray-600 font-medium">
-        Rp {total.toLocaleString()}
-      </td>
-
-      <td className="px-6 py-5">
-        <StatusBadge status={status} />
-      </td>
-
-      <td className="px-6 py-5 text-gray-500">
-        {date}
-      </td>
-
+      {/* CUSTOMER */}
       <td className="px-6 py-5">
 
         <div className="flex items-center gap-4">
 
-          <button className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition">
+          {/* FOTO */}
+          <img
+            src={image}
+            alt={customer}
+            className="w-14 h-14 rounded-2xl object-cover border border-gray-200 shadow-sm"
+          />
+
+          {/* INFO */}
+          <div>
+
+            {/* LINK KE ORDER DETAIL */}
+            <Link
+              to={`/orders/${id}`}
+              className="font-semibold text-gray-800 hover:text-green-600 transition"
+            >
+              {customer}
+            </Link>
+
+            <p className="text-xs text-gray-400">
+              Active Customer
+            </p>
+
+          </div>
+
+        </div>
+
+      </td>
+
+      {/* TOTAL */}
+      <td className="px-6 py-5 text-gray-600 font-medium">
+        Rp {total.toLocaleString()}
+      </td>
+
+      {/* STATUS */}
+      <td className="px-6 py-5">
+        <StatusBadge status={status} />
+      </td>
+
+      {/* DATE */}
+      <td className="px-6 py-5 text-gray-500">
+        {date}
+      </td>
+
+      {/* ACTION */}
+      <td className="px-6 py-5">
+
+        <div className="flex items-center gap-4">
+
+          <Link
+            to={`/orders/${id}`}
+            className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition"
+          >
             <FaEye />
             View
-          </button>
+          </Link>
 
           <button className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition">
             <FaTrashAlt />
