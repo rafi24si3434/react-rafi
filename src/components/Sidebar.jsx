@@ -4,6 +4,7 @@ import {
   FaList,
   FaHeadphones,
   FaBoxOpen,
+  FaStar,
 } from "react-icons/fa";
 
 export default function Sidebar() {
@@ -79,6 +80,18 @@ export default function Sidebar() {
                 <>
                   <FaHeadphones className={iconClass(isActive)} />
                   Customers
+                </>
+              )}
+            </NavLink>
+          </li>
+
+          {/* FITUR XYZ */}
+          <li>
+            <NavLink to="/fitur-xyz" className={menuClass}>
+              {({ isActive }) => (
+                <>
+                  <FaStar className={iconClass(isActive)} />
+                  Fitur XYZ
                 </>
               )}
             </NavLink>

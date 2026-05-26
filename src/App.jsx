@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Customers = lazy(() => import("./pages/Customers"));
 const Orders = lazy(() => import("./pages/Orders"));
 const Product = lazy(() => import("./pages/Product"));
+const FiturXyz = lazy(() => import("./pages/FiturXyz"));
 
 /* DETAIL PAGES */
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
@@ -117,6 +118,12 @@ function App() {
           <Route
             path="/products/:id"
             element={<ProductDetail />}
+          />
+
+          {/* FITUR XYZ */}
+          <Route
+            path="/fitur-xyz"
+            element={<FiturXyz />}
           />
 
           {/* ERROR */}
