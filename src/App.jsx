@@ -4,11 +4,12 @@ import { Routes, Route } from "react-router-dom";
 
 import Loading from "./components/Loading";
 
-/* LAZY PAGES */
+/* PAGES */
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Customers = lazy(() => import("./pages/Customers"));
 const Orders = lazy(() => import("./pages/Orders"));
 const Product = lazy(() => import("./pages/Product"));
+const Notes = lazy(() => import("./pages/Notes"));
 const FiturXyz = lazy(() => import("./pages/FiturXyz"));
 
 /* DETAIL PAGES */
@@ -24,7 +25,7 @@ const AddProduct = lazy(() => import("./pages/AddProduct"));
 /* ERROR PAGE */
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
-/* AUTH PAGES */
+/* AUTH */
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const Forgot = lazy(() => import("./pages/auth/Forgot"));
@@ -34,123 +35,53 @@ const MainLayout = lazy(() => import("./layouts/MainLayout"));
 const AuthLayout = lazy(() => import("./layouts/AuthLayout"));
 
 function App() {
-
   return (
     <Suspense fallback={<Loading />}>
-
       <Routes>
 
-        {/* AUTH */}
+        {/* ================= AUTH ================= */}
         <Route element={<AuthLayout />}>
-
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-
-          <Route
-            path="/register"
-            element={<Register />}
-          />
-
-          <Route
-            path="/forgot"
-            element={<Forgot />}
-          />
-
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot" element={<Forgot />} />
         </Route>
 
-        {/* MAIN */}
+        {/* ================= MAIN ================= */}
         <Route element={<MainLayout />}>
 
-          {/* DASHBOARD */}
-          <Route
-            path="/"
-            element={<Dashboard />}
-          />
+          {/* Dashboard */}
+          <Route path="/" element={<Dashboard />} />
 
-          {/* CUSTOMERS */}
-          <Route
-            path="/customers"
-            element={<Customers />}
-          />
+          {/* Customers */}
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customers/add" element={<AddCustomer />} />
+          <Route path="/customers/:id" element={<CustomerDetail />} />
 
-          <Route
-            path="/customers/add"
-            element={<AddCustomer />}
-          />
+          {/* Orders */}
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders/add" element={<AddOrder />} />
+          <Route path="/orders/:id" element={<OrderDetail />} />
 
-          {/* CUSTOMER DETAIL */}
-          <Route
-            path="/customers/:id"
-            element={<CustomerDetail />}
-          />
+          {/* Product */}
+          <Route path="/product" element={<Product />} />
+          <Route path="/product/add" element={<AddProduct />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
 
-          {/* ORDERS */}
-          <Route
-            path="/orders"
-            element={<Orders />}
-          />
+          {/* Notes */}
+          <Route path="/notes" element={<Notes />} />
 
-          <Route
-            path="/orders/add"
-            element={<AddOrder />}
-          />
+          {/* Fitur XYZ */}
+          <Route path="/fitur-xyz" element={<FiturXyz />} />
 
-          {/* ✅ ORDER DETAIL */}
-          <Route
-            path="/orders/:id"
-            element={<OrderDetail />}
-          />
-
-          {/* PRODUCT */}
-          <Route
-            path="/product"
-            element={<Product />}
-          />
-
-          <Route
-            path="/product/add"
-            element={<AddProduct />}
-          />
-
-          {/* PRODUCT DETAIL */}
-          <Route
-            path="/products/:id"
-            element={<ProductDetail />}
-          />
-
-          {/* FITUR XYZ */}
-          <Route
-            path="/fitur-xyz"
-            element={<FiturXyz />}
-          />
-
-          {/* ERROR */}
-          <Route
-            path="/400"
-            element={<ErrorPage code="400" />}
-          />
-
-          <Route
-            path="/401"
-            element={<ErrorPage code="401" />}
-          />
-
-          <Route
-            path="/403"
-            element={<ErrorPage code="403" />}
-          />
-
-          <Route
-            path="*"
-            element={<ErrorPage code="404" />}
-          />
+          {/* Error Pages */}
+          <Route path="/400" element={<ErrorPage code="400" />} />
+          <Route path="/401" element={<ErrorPage code="401" />} />
+          <Route path="/403" element={<ErrorPage code="403" />} />
+          <Route path="*" element={<ErrorPage code="404" />} />
 
         </Route>
 
       </Routes>
-
     </Suspense>
   );
 }

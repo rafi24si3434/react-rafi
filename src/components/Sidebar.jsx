@@ -97,6 +97,17 @@ export default function Sidebar() {
             </NavLink>
           </li>
 
+          <li>
+            <NavLink to="/notes" className={menuClass}>
+              {({ isActive }) => (
+                <>
+                  <FaStar className={iconClass(isActive)} />
+                  Notes
+                </>
+              )}
+            </NavLink>
+          </li>
+
         </ul>
       </div>
 
