@@ -3,6 +3,8 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Loading from "./components/Loading";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 
 /* PAGES */
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -40,45 +42,51 @@ function App() {
       <Routes>
 
         {/* ================= AUTH ================= */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
+        <Route element={<GuestRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot" element={<Forgot />} />
+          </Route>
         </Route>
 
         {/* ================= MAIN ================= */}
-        <Route element={<MainLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
 
-          {/* Dashboard */}
-          <Route path="/" element={<Dashboard />} />
+            {/* Dashboard */}
+            <Route path="/" element={<Dashboard />} />
 
-          {/* Customers */}
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/add" element={<AddCustomer />} />
-          <Route path="/customers/:id" element={<CustomerDetail />} />
+            {/* Customers (Admin only) */}
+            <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/customers/add" element={<AddCustomer />} />
+              <Route path="/customers/:id" element={<CustomerDetail />} />
+              <Route path="/notes" element={<Notes />} />
+            </Route>
 
-          {/* Orders */}
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/add" element={<AddOrder />} />
-          <Route path="/orders/:id" element={<OrderDetail />} />
+            {/* Orders (Both) */}
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/add" element={<AddOrder />} />
+            <Route path="/orders/:id" element={<OrderDetail />} />
 
-          {/* Product */}
-          <Route path="/product" element={<Product />} />
-          <Route path="/product/add" element={<AddProduct />} />
-          <Route path="/products/:id" element={<ProductDetail />} />
+            {/* Product (Both read, Admin can add/edit/delete) */}
+            <Route path="/product" element={<Product />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+              <Route path="/product/add" element={<AddProduct />} />
+            </Route>
 
-          {/* Notes */}
-          <Route path="/notes" element={<Notes />} />
+            {/* Fitur XYZ */}
+            <Route path="/fitur-xyz" element={<FiturXyz />} />
 
-          {/* Fitur XYZ */}
-          <Route path="/fitur-xyz" element={<FiturXyz />} />
+            {/* Error Pages */}
+            <Route path="/400" element={<ErrorPage code="400" />} />
+            <Route path="/401" element={<ErrorPage code="401" />} />
+            <Route path="/403" element={<ErrorPage code="403" />} />
+            <Route path="*" element={<ErrorPage code="404" />} />
 
-          {/* Error Pages */}
-          <Route path="/400" element={<ErrorPage code="400" />} />
-          <Route path="/401" element={<ErrorPage code="401" />} />
-          <Route path="/403" element={<ErrorPage code="403" />} />
-          <Route path="*" element={<ErrorPage code="404" />} />
-
+          </Route>
         </Route>
 
       </Routes>

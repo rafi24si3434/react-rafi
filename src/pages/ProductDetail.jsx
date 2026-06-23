@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   FaArrowLeft,
@@ -6,24 +7,55 @@ import {
   FaWarehouse,
 } from "react-icons/fa";
 
-// IMPORT DATA JSON
-import products from "../data/products";
+import { supabase } from "../lib/supabase";
 
 export default function ProductDetail() {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // CARI PRODUCT BERDASARKAN ID
-  const product = products.find(
-    (p) => p.id === Number(id)
-  );
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProductDetail() {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error) throw error;
+
+        setProduct({
+          ...data,
+          title: data.name,
+          image: data.image_url || "https://images.unsplash.com/photo-1546435770-a3e426bf472b",
+        });
+      } catch (err) {
+        console.error("Error loading product detail:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProductDetail();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FB]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-green-500"></div>
+        <p className="mt-3 text-gray-500">Loading product detail...</p>
+      </div>
+    );
+  }
 
   // JIKA PRODUCT TIDAK ADA
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FB]">
-
         <h1 className="text-4xl font-bold text-red-500 mb-3">
           Product Not Found
         </h1>
@@ -34,7 +66,6 @@ export default function ProductDetail() {
         >
           Back to Product
         </button>
-
       </div>
     );
   }
@@ -52,17 +83,13 @@ export default function ProductDetail() {
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-8">
-
         <div>
-
           <h1 className="text-3xl font-bold text-gray-800">
             Product Detail
           </h1>
-
           <p className="text-gray-400 mt-1">
             Complete information about selected product
           </p>
-
         </div>
 
         <button
@@ -72,7 +99,6 @@ export default function ProductDetail() {
           <FaArrowLeft />
           Back
         </button>
-
       </div>
 
       {/* CARD */}
@@ -85,22 +111,20 @@ export default function ProductDetail() {
 
             {/* FOTO PRODUCT */}
             <div className="flex justify-center">
-
               <div className="bg-white rounded-3xl p-6 shadow-2xl">
-
                 <img
                   src={product.image}
                   alt={product.title}
                   className="w-full max-w-md h-80 object-cover rounded-2xl"
+                  onError={(e) => {
+                    e.target.src = "https://images.unsplash.com/photo-1546435770-a3e426bf472b";
+                  }}
                 />
-
               </div>
-
             </div>
 
             {/* PRODUCT INFO */}
             <div>
-
               <p className="uppercase tracking-widest text-green-100 text-sm mb-3">
                 {product.category}
               </p>
@@ -114,7 +138,7 @@ export default function ProductDetail() {
               </p>
 
               <h2 className="text-4xl font-bold mt-6">
-                Rp {product.price.toLocaleString()}
+                Rp {Number(product.price).toLocaleString()}
               </h2>
 
               <div className="mt-6">
@@ -124,7 +148,6 @@ export default function ProductDetail() {
                   {product.stock} Items Available
                 </span>
               </div>
-
             </div>
 
           </div>
@@ -136,92 +159,64 @@ export default function ProductDetail() {
 
           {/* CATEGORY */}
           <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
-
             <div className="flex items-center gap-4">
-
               <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-2xl">
                 <FaLayerGroup />
               </div>
-
               <div>
-
                 <p className="text-sm text-gray-400">
                   Category
                 </p>
-
                 <h2 className="text-xl font-bold text-gray-800">
                   {product.category}
                 </h2>
-
               </div>
-
             </div>
-
           </div>
 
           {/* BRAND */}
           <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
-
             <div className="flex items-center gap-4">
-
               <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">
                 <FaTag />
               </div>
-
               <div>
-
                 <p className="text-sm text-gray-400">
                   Brand
                 </p>
-
                 <h2 className="text-xl font-bold text-gray-800">
                   {product.brand}
                 </h2>
-
               </div>
-
             </div>
-
           </div>
 
           {/* STOCK */}
           <div className="bg-[#F8F9FB] rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
-
             <div className="flex items-center gap-4">
-
               <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-500 flex items-center justify-center text-2xl">
                 <FaWarehouse />
               </div>
-
               <div>
-
                 <p className="text-sm text-gray-400">
                   Stock
                 </p>
-
                 <h2 className="text-xl font-bold text-gray-800">
                   {product.stock} PCS
                 </h2>
-
               </div>
-
             </div>
-
           </div>
 
         </div>
 
         {/* DESCRIPTION */}
         <div className="px-8 pb-8">
-
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 rounded-3xl p-8">
-
             <h1 className="text-2xl font-bold text-green-700 mb-4">
               Product Information
             </h1>
-
             <p className="text-gray-600 leading-relaxed text-lg">
-
               <span className="font-semibold text-gray-800">
                 {product.title}
               </span>{" "}
@@ -238,11 +233,8 @@ export default function ProductDetail() {
                 {product.stock} items
               </span>{" "}
               available in stock.
-
             </p>
-
           </div>
-
         </div>
 
       </div>

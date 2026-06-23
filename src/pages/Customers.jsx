@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   FaSearch,
@@ -9,19 +9,19 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 
-// IMPORT DATA JSON
-import customers from "../data/customers";
+import { supabase } from "../lib/supabase";
 
 const ITEMS_PER_PAGE = 5;
 
 // ✅ Loyalty Badge
 function LoyaltyBadge({ loyalty }) {
-
   const styles =
     loyalty === "Gold"
       ? "bg-yellow-100 text-yellow-700 border border-yellow-200"
       : loyalty === "Silver"
       ? "bg-slate-100 text-slate-600 border border-slate-200"
+      : loyalty === "Platinum"
+      ? "bg-purple-100 text-purple-700 border border-purple-200"
       : "bg-orange-100 text-orange-600 border border-orange-200";
 
   return (
@@ -41,45 +41,42 @@ function TableRow({
   phone,
   loyalty,
   image,
+  onDelete,
 }) {
   return (
     <tr className="border-b border-gray-100 hover:bg-green-50/40 transition duration-200">
 
       {/* ID */}
       <td className="px-6 py-5 text-gray-500 font-medium">
-        #{id}
+        #{id.substring(0, 8)}...
       </td>
 
       {/* CUSTOMER */}
       <td className="px-6 py-5">
-
         <div className="flex items-center gap-4">
-
           {/* FOTO */}
           <img
-            src={image}
+            src={image || "https://randomuser.me/api/portraits/lego/1.jpg"}
             alt={name}
             className="w-14 h-14 rounded-2xl object-cover border border-gray-200 shadow-sm"
+            onError={(e) => {
+              e.target.src = "https://randomuser.me/api/portraits/lego/1.jpg";
+            }}
           />
 
           {/* INFO */}
           <div>
-
             <Link
               to={`/customers/${id}`}
               className="font-semibold text-gray-800 hover:text-green-600 transition"
             >
               {name}
             </Link>
-
             <p className="text-xs text-gray-400">
               Customer Member
             </p>
-
           </div>
-
         </div>
-
       </td>
 
       {/* EMAIL */}
@@ -89,7 +86,7 @@ function TableRow({
 
       {/* PHONE */}
       <td className="px-6 py-5 text-gray-500">
-        {phone}
+        {phone || "-"}
       </td>
 
       {/* LOYALTY */}
@@ -99,9 +96,7 @@ function TableRow({
 
       {/* ACTION */}
       <td className="px-6 py-5">
-
         <div className="flex items-center gap-4">
-
           <Link
             to={`/customers/${id}`}
             className="flex items-center gap-1 text-blue-500 hover:text-blue-600 text-sm font-medium transition"
@@ -110,13 +105,14 @@ function TableRow({
             View
           </Link>
 
-          <button className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition">
+          <button 
+            onClick={() => onDelete(id)}
+            className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium transition"
+          >
             <FaTrashAlt />
             Delete
           </button>
-
         </div>
-
       </td>
 
     </tr>
@@ -124,45 +120,87 @@ function TableRow({
 }
 
 export default function Customers() {
-
   const navigate = useNavigate();
 
+  const [customersList, setCustomersList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const fetchCustomers = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("role", "Member")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      const formatted = (data || []).map(c => ({
+        id: c.id,
+        name: c.name,
+        email: c.email,
+        phone: c.phone,
+        loyalty: c.tier,
+        image: c.avatar_url,
+      }));
+
+      setCustomersList(formatted);
+    } catch (err) {
+      console.error("Error fetching customers profiles:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Yakin ingin menghapus customer ini? Akun auth yang terhubung juga akan terhapus.")) return;
+
+    try {
+      // Deleting profile. RLS cascade will delete, or if we delete from profiles we might get conflict if there's no auth delete.
+      // But we set profiles CASCADE, let's see. In Supabase, if we delete profiles row, does it delete auth?
+      // No, trigger is auth.users delete cascade profiles. If we delete from public.profiles, it deletes the profile.
+      // For simplicity, we delete the profile row.
+      const { error } = await supabase
+        .from("profiles")
+        .delete()
+        .eq("id", userId);
+
+      if (error) throw error;
+      fetchCustomers();
+    } catch (err) {
+      alert("Gagal menghapus customer: " + err.message);
+    }
+  };
+
   // ✅ FILTER DATA
-  const filtered = customers.filter((c) =>
+  const filtered = customersList.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
   );
 
   // ✅ PAGINATION
-  const totalPages = Math.ceil(
-    filtered.length / ITEMS_PER_PAGE
-  );
-
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
-
-  const currentData = filtered.slice(
-    start,
-    start + ITEMS_PER_PAGE
-  );
+  const currentData = filtered.slice(start, start + ITEMS_PER_PAGE);
 
   return (
     <div className="p-6 bg-[#F8F9FB] min-h-screen">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-8">
-
         <div>
-
           <h1 className="text-3xl font-bold text-gray-800">
             Customers
           </h1>
-
           <p className="text-sm text-gray-400 mt-1">
             Manage your customers data easily
           </p>
-
         </div>
 
         <button
@@ -172,12 +210,10 @@ export default function Customers() {
           <FaUserPlus />
           Add Customer
         </button>
-
       </div>
 
       {/* SEARCH */}
       <div className="relative mb-6 w-96">
-
         <input
           type="text"
           placeholder="Search customer..."
@@ -186,84 +222,58 @@ export default function Customers() {
             setSearch(e.target.value);
             setCurrentPage(1);
           }}
-          className="w-full bg-white pl-11 pr-4 py-3 border border-gray-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none"
+          className="w-full bg-white pl-11 pr-4 py-3 border border-gray-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none text-sm"
         />
-
         <FaSearch className="absolute left-4 top-4 text-gray-400 text-sm" />
-
       </div>
 
       {/* TABLE */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-
-        <table className="w-full text-left">
-
-          <thead className="bg-gradient-to-r from-green-50 to-white text-gray-600 text-sm">
-
-            <tr>
-
-              <th className="px-6 py-5 font-semibold">
-                ID
-              </th>
-
-              <th className="px-6 py-5 font-semibold">
-                Customer
-              </th>
-
-              <th className="px-6 py-5 font-semibold">
-                Email
-              </th>
-
-              <th className="px-6 py-5 font-semibold">
-                Phone
-              </th>
-
-              <th className="px-6 py-5 font-semibold">
-                Loyalty
-              </th>
-
-              <th className="px-6 py-5 font-semibold">
-                Action
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {currentData.map((c) => (
-              <TableRow key={c.id} {...c} />
-            ))}
-
-            {currentData.length === 0 && (
+        {loading ? (
+          <div className="text-center py-12 text-gray-500">Loading customers data...</div>
+        ) : (
+          <table className="w-full text-left">
+            <thead className="bg-gradient-to-r from-green-50 to-white text-gray-600 text-sm">
               <tr>
-
-                <td
-                  colSpan="6"
-                  className="text-center py-12 text-gray-400"
-                >
-                  No customers found
-                </td>
-
+                <th className="px-6 py-5 font-semibold">ID</th>
+                <th className="px-6 py-5 font-semibold">Customer</th>
+                <th className="px-6 py-5 font-semibold">Email</th>
+                <th className="px-6 py-5 font-semibold">Phone</th>
+                <th className="px-6 py-5 font-semibold">Loyalty</th>
+                <th className="px-6 py-5 font-semibold">Action</th>
               </tr>
-            )}
+            </thead>
+            <tbody>
+              {currentData.map((c) => (
+                <TableRow 
+                  key={c.id} 
+                  {...c} 
+                  onDelete={handleDelete}
+                />
+              ))}
 
-          </tbody>
-
-        </table>
-
+              {currentData.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="text-center py-12 text-gray-400"
+                  >
+                    No customers found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* PAGINATION */}
       <div className="flex justify-between items-center mt-6">
-
         <p className="text-sm text-gray-500">
           Showing page {currentPage} of {totalPages}
         </p>
 
         <div className="flex gap-3">
-
           <button
             onClick={() => setCurrentPage((p) => p - 1)}
             disabled={currentPage === 1}
@@ -279,9 +289,7 @@ export default function Customers() {
           >
             <FaChevronRight />
           </button>
-
         </div>
-
       </div>
 
     </div>

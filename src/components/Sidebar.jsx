@@ -6,8 +6,11 @@ import {
   FaBoxOpen,
   FaStar,
 } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "Admin";
 
   // function untuk styling active
   const menuClass = ({ isActive }) =>
@@ -74,39 +77,43 @@ export default function Sidebar() {
             </NavLink>
           </li>
 
-          <li>
-            <NavLink to="/customers" className={menuClass}>
-              {({ isActive }) => (
-                <>
-                  <FaHeadphones className={iconClass(isActive)} />
-                  Customers
-                </>
-              )}
-            </NavLink>
-          </li>
+          {/* ADMIN-ONLY MENUS */}
+          {isAdmin && (
+            <>
+              <li>
+                <NavLink to="/customers" className={menuClass}>
+                  {({ isActive }) => (
+                    <>
+                      <FaHeadphones className={iconClass(isActive)} />
+                      Customers
+                    </>
+                  )}
+                </NavLink>
+              </li>
 
-          {/* FITUR XYZ */}
-          <li>
-            <NavLink to="/fitur-xyz" className={menuClass}>
-              {({ isActive }) => (
-                <>
-                  <FaStar className={iconClass(isActive)} />
-                  Fitur XYZ
-                </>
-              )}
-            </NavLink>
-          </li>
+              <li>
+                <NavLink to="/fitur-xyz" className={menuClass}>
+                  {({ isActive }) => (
+                    <>
+                      <FaStar className={iconClass(isActive)} />
+                      Fitur XYZ
+                    </>
+                  )}
+                </NavLink>
+              </li>
 
-          <li>
-            <NavLink to="/notes" className={menuClass}>
-              {({ isActive }) => (
-                <>
-                  <FaStar className={iconClass(isActive)} />
-                  Notes
-                </>
-              )}
-            </NavLink>
-          </li>
+              <li>
+                <NavLink to="/notes" className={menuClass}>
+                  {({ isActive }) => (
+                    <>
+                      <FaStar className={iconClass(isActive)} />
+                      Notes
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            </>
+          )}
 
         </ul>
       </div>

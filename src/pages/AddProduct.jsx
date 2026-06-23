@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 export default function AddProduct() {
-
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -15,6 +15,7 @@ export default function AddProduct() {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // HANDLE INPUT
   const handleChange = (e) => {
@@ -25,8 +26,9 @@ export default function AddProduct() {
   };
 
   // HANDLE SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     // VALIDASI
     if (
@@ -41,10 +43,55 @@ export default function AddProduct() {
       return;
     }
 
-    console.log("DATA PRODUCT:", form);
+    const priceNum = Number(form.price);
+    const stockNum = parseInt(form.stock, 10);
 
-    // kembali ke halaman product
-    navigate("/product");
+    if (isNaN(priceNum) || priceNum < 0) {
+      setError("Harga harus berupa angka positif!");
+      return;
+    }
+
+    if (isNaN(stockNum) || stockNum < 0) {
+      setError("Stok harus berupa angka positif!");
+      return;
+    }
+
+    setLoading(true);
+
+    const categoryImages = {
+      Mouse: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7",
+      Keyboard: "https://images.unsplash.com/photo-1587829741301-dc798b83add3",
+      Monitor: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf",
+      Headset: "https://images.unsplash.com/photo-1546435770-a3e426bf472b",
+    };
+
+    const imageUrl = categoryImages[form.category] || "https://images.unsplash.com/photo-1546435770-a3e426bf472b";
+
+    try {
+      const { error: insertError } = await supabase
+        .from("products")
+        .insert([
+          {
+            name: form.title,
+            code: form.code,
+            category: form.category,
+            brand: form.brand,
+            price: priceNum,
+            stock: stockNum,
+            image_url: imageUrl,
+            description: `${form.title} is a premium ${form.category} from ${form.brand}.`,
+          },
+        ]);
+
+      if (insertError) throw insertError;
+
+      // kembali ke halaman product
+      navigate("/product");
+    } catch (err) {
+      setError(err.message || "Gagal menyimpan produk");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,7 +124,7 @@ export default function AddProduct() {
             value={form.title}
             onChange={handleChange}
             placeholder="Enter product title"
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           />
         </div>
 
@@ -93,7 +140,7 @@ export default function AddProduct() {
             value={form.code}
             onChange={handleChange}
             placeholder="Contoh: PRD-101"
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           />
         </div>
 
@@ -107,7 +154,7 @@ export default function AddProduct() {
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           >
             <option value="">Select Category</option>
             <option>Mouse</option>
@@ -129,7 +176,7 @@ export default function AddProduct() {
             value={form.brand}
             onChange={handleChange}
             placeholder="Enter product brand"
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           />
         </div>
 
@@ -144,8 +191,8 @@ export default function AddProduct() {
             name="price"
             value={form.price}
             onChange={handleChange}
-            placeholder="Contoh: Rp 500000"
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            placeholder="Contoh: 500000"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           />
         </div>
 
@@ -161,7 +208,7 @@ export default function AddProduct() {
             value={form.stock}
             onChange={handleChange}
             placeholder="Enter stock"
-            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
+            className="w-full mt-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-400 outline-none text-sm"
           />
         </div>
 
@@ -170,17 +217,19 @@ export default function AddProduct() {
 
           <button
             type="button"
+            disabled={loading}
             onClick={() => navigate("/product")}
-            className="px-4 py-2 border rounded-lg"
+            className="px-4 py-2 border rounded-lg text-sm"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            disabled={loading}
+            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 text-sm font-semibold"
           >
-            Save Product
+            {loading ? "Saving..." : "Save Product"}
           </button>
 
         </div>
